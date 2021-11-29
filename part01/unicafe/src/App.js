@@ -1,28 +1,33 @@
 import React, { useState } from 'react'
 
-const Statistics = ({ good, neutral, bad, all, average, positive}) => {
+const Statistics = ({ good, neutral, bad, all, average, positivePercentage}) => {
   if (all > 0) {
     return (
       <div>
-        <h2>statistics</h2>
-        <div>good {good}</div>
-        <div>neutral {neutral}</div>
-        <div>bad {bad}</div>
-        <div>all {all}</div>
-        <div>average {average}</div>
-        <div>positive {positive} %</div>
+        <StatisticLine text='good' value={good} />
+        <StatisticLine text='neutral' value={neutral} />
+        <StatisticLine text='bad' value={bad} />
+        <StatisticLine text='all' value={all} />
+        <StatisticLine text='average' value={average} />
+        <StatisticLine text='positive' value={positivePercentage + ' %'} />
       </div>
     )
   } else {
     return (
       <div>
-        <h2>statistics</h2>
         <div>No feedback given</div>
       </div>
     )
   }
 }
 
+const StatisticLine = ({ text, value }) => <div>{text} {value}</div>
+
+const Button = ({ onClick, text }) => (
+  <button onClick={onClick}>
+    {text}
+  </button>
+)
 
 const App = () => {
   // save clicks of each button to its own state
@@ -37,16 +42,17 @@ const App = () => {
   return (
     <div>
       <h2>give feedback</h2>
-      <button onClick={() => setGood(good + 1)}>good</button>
-      <button onClick={() => setNeutral(neutral + 1)}>neutral</button>
-      <button onClick={() => setBad(bad + 1)}>bad</button>
+      <Button onClick={() => setGood(good + 1)} text={"good"} />
+      <Button onClick={() => setNeutral(neutral + 1)} text={"neutral"} />
+      <Button onClick={() => setBad(bad + 1)} text={"bad"} />
+      <h2>statistics</h2>
       <Statistics 
         good={good}
         neutral={neutral}
         bad={bad}
         all={all}
         average={average}
-        positive={positive}
+        positivePercentage={positive}
       />
     </div>
   )
