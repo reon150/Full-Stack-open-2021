@@ -21,13 +21,23 @@ const App = () => {
     copy[selected] += 1
     setPoints(copy)  
   }
-  
+
+  const getAnecdoteIndexWithMostVotes = () =>
+    points.reduce((mostVotesIndex, x, index, points) => x > points[mostVotesIndex] ? index : mostVotesIndex, 0);
+
   return (
     <div>
-      <div>{anecdotes[selected]}</div>
-      <div>has {points[selected]} votes</div> 
-      <button onClick={setAnecdotesPoints}>vote</button>
-      <button onClick={() => setSelected(getRandomNumber(anecdotes.length))}>next anecdote</button>
+      <div>
+        <h2>Anecdote of the day</h2>
+        <div>{anecdotes[selected]}</div>
+        <div>has {points[selected]} votes</div> 
+        <button onClick={setAnecdotesPoints}>vote</button>
+        <button onClick={() => setSelected(getRandomNumber(anecdotes.length))}>next anecdote</button>
+      </div>
+      <div>
+        <h2>Anecdote with most votes</h2>
+        <div>{anecdotes[getAnecdoteIndexWithMostVotes()]}</div>
+      </div>
     </div>
   )
 }
