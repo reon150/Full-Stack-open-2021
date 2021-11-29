@@ -3,18 +3,14 @@ import React from 'react'
 const Header = props => <h1>{props.course}</h1>
 
 const Content = props => (
-  <>
-    <p>
-        {props.part1} {props.exercises1}
-      </p>
-      <p>
-        {props.part2} {props.exercises2}
-      </p>
-      <p>
-        {props.part3} {props.exercises3}
-    </p>
-  </>
+  <div>
+    <Part part={props.part1} exercises={props.exercises1} />
+    <Part part={props.part2} exercises={props.exercises2} />
+    <Part part={props.part3} exercises={props.exercises3} />
+  </div>
 )
+
+const Part = props => <p>{props.part} {props.exercises}</p>
 
 const Total = props => <p>Number of exercises {props.totalNumberOfExcercises}</p>
 
@@ -42,17 +38,5 @@ const App = () => {
     </div>
   )
 }
-
-// const App = () => {
-//   // const-definitions
-
-//   return (
-//     <div>
-//       <Header course={course} />
-//       <Content ... />
-//       <Total ... />
-//     </div>
-//   )
-// }
 
 export default App;
