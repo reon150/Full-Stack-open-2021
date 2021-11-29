@@ -4,12 +4,16 @@ const Statistics = ({ good, neutral, bad, all, average, positivePercentage}) => 
   if (all > 0) {
     return (
       <div>
-        <StatisticLine text='good' value={good} />
-        <StatisticLine text='neutral' value={neutral} />
-        <StatisticLine text='bad' value={bad} />
-        <StatisticLine text='all' value={all} />
-        <StatisticLine text='average' value={average} />
-        <StatisticLine text='positive' value={positivePercentage + ' %'} />
+        <table>
+          <tbody>
+            <StatisticLine text='good' value={good} />
+            <StatisticLine text='neutral' value={neutral} />
+            <StatisticLine text='bad' value={bad} />
+            <StatisticLine text='all' value={all} />
+            <StatisticLine text='average' value={average} />
+            <StatisticLine text='positive' value={positivePercentage + ' %'} />
+          </tbody>
+        </table>
       </div>
     )
   } else {
@@ -21,7 +25,7 @@ const Statistics = ({ good, neutral, bad, all, average, positivePercentage}) => 
   }
 }
 
-const StatisticLine = ({ text, value }) => <div>{text} {value}</div>
+const StatisticLine = ({ text, value }) => <tr><td>{text}</td><td>{value}</td></tr>
 
 const Button = ({ onClick, text }) => (
   <button onClick={onClick}>
