@@ -1,29 +1,5 @@
-import React from 'react';
-
-const Header = ({ course }) => <h1>{course.name}</h1>
-
-const Total = ({ course }) => {
-  const total = course.parts.reduce((s, p) => s += p.exercises, 0)
-  return(
-    <strong>Total of {total} exercises</strong>
-  ) 
-}
-
-const Part = (props) => (
-  <p>
-    {props.part.name} {props.part.exercises}
-  </p>    
-)
-
-const Content = ({ course }) => course.parts.map(part => <Part part={part} />)
-
-const Course = ({ course }) => (
-  <div>
-    <Header course={course} />
-    <Content course={course} />
-    <Total course={course} />
-  </div>
-)
+import React from 'react'
+import Course from './Course'
 
 const App = () => {
   const courses = [
@@ -73,6 +49,5 @@ const App = () => {
   
   return courses.map(course => <Course course={course} />)
 }
-
 
 export default App;
