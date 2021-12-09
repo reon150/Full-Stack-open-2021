@@ -29,11 +29,17 @@ const App = () => {
     if (persons.some(person => person.name === formState.name)) {
       alert(`${formState.name} is already added to phonebook`)
     } else {
-      const newPersons = persons.concat({ name: formState.name, number: formState.number, id: persons[persons.length - 1].id + 1 })
-      setPersons(newPersons)
-      setFormState({ name: '', number: '' })
-      setSearch('')
-      setPersonsToShow(newPersons)
+      
+      const newPerson = { name: formState.name, number: formState.number }
+      axios
+        .post('http://localhost:3001/persons', newPerson)
+        .then(response => {
+          const newPersons = persons.concat(response.data)
+          setPersons(newPersons)
+          setFormState({ name: '', number: '' })
+          setSearch('')
+          setPersonsToShow(newPersons)
+        })
     }
   }
 
