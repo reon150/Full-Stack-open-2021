@@ -50,6 +50,18 @@ const App = () => {
     setPersonsToShow(persons.filter(person => person.name.toLowerCase().includes(event.target.value)))
   }
 
+  const deletePerson = (event) => {
+    const person = persons.find(p => p.id === parseInt(event.target.value))
+    if (window.confirm(`Delete ${person.name}`)) {
+      personsService
+        .remove(person.id)
+        .then(() => {
+          setPersons(persons.filter(p => p.id !== person.id))
+          setPersonsToShow(personsToShow.filter(p => p.id !== person.id))
+        })
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -57,7 +69,7 @@ const App = () => {
       <h3>Add a new</h3>
       <PersonForm addPerson={addPerson} formState={formState} handleFormChange={handleFormChange} />
       <h2>Numbers</h2>
-      <Persons personsToShow={personsToShow} />
+      <Persons personsToShow={personsToShow} deletePerson={deletePerson} />
     </div>
   )
 }
