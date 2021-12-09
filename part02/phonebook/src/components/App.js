@@ -27,8 +27,23 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    if (persons.some(person => person.name === formState.name)) {
-      alert(`${formState.name} is already added to phonebook`)
+    const person = persons.find(person => person.name === formState.name)
+    if (person !== undefined) {
+      if (window.confirm(`${person.name} is already added to phonebook, replace the old number with a new one?`)) {
+        const changedPerson = { ...person, number: formState.number }
+        personsService
+          .update(changedPerson.id, changedPerson)
+          .then(returnedPerson => {
+            const updatedPersons = persons.map(person => person.id !== changedPerson.id ? person : returnedPerson)
+            setPersons(updatedPersons)
+            setFormState({ name: '', number: '' })
+            setSearch('')
+            setPersonsToShow(updatedPersons)
+          })
+          .catch(error => {
+            alert(`An error has ocurred: ${error.message}`)
+          })
+      }
     } else {
       
       const newPerson = { name: formState.name, number: formState.number }
