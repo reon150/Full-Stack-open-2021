@@ -3,12 +3,14 @@ import Filter from './Filter';
 import PersonForm from './PersonForm';
 import Persons from './Persons';
 import personsService from '../services/persons';
+import Notification from './Notification';
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [personsToShow, setPersonsToShow] = useState([...persons])
   const [formState, setFormState] = useState({ name: '', number: '' })
   const [search, setSearch] = useState('')
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     personsService
@@ -39,13 +41,19 @@ const App = () => {
             setFormState({ name: '', number: '' })
             setSearch('')
             setPersonsToShow(updatedPersons)
+            setMessage({
+              content: `${person.name}'s number has been updated `,
+              type: 'information'
+            })
+            setTimeout(() => {
+              setMessage(null)
+            }, 5000)
           })
           .catch(error => {
             alert(`An error has ocurred: ${error.message}`)
           })
       }
     } else {
-      
       const newPerson = { name: formState.name, number: formState.number }
       personsService
         .create(newPerson)
@@ -55,6 +63,13 @@ const App = () => {
           setFormState({ name: '', number: '' })
           setSearch('')
           setPersonsToShow(newPersons)
+          setMessage({
+            content: `Added ${person.name}`,
+            type: 'information'
+          })
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
         })
         .catch(error => alert(`An error has ocurred: ${error.message}`))
     }
@@ -80,6 +95,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
       <Filter search={search} filterPhoneBook={filterPhoneBook} />
       <h3>Add a new</h3>
       <PersonForm addPerson={addPerson} formState={formState} handleFormChange={handleFormChange} />
