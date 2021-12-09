@@ -42,15 +42,25 @@ const App = () => {
             setSearch('')
             setPersonsToShow(updatedPersons)
             setMessage({
-              content: `${person.name}'s number has been updated `,
+              content: `${person.name}'s number has been updated`,
               type: 'information'
             })
             setTimeout(() => {
               setMessage(null)
             }, 5000)
           })
-          .catch(error => {
-            alert(`An error has ocurred: ${error.message}`)
+          .catch(() => {
+            setPersons(persons.filter(p => p.id !== person.id))
+            setPersonsToShow(persons.filter(p => p.id !== person.id))
+            setFormState({ name: '', number: '' })
+            setSearch('')
+            setMessage({
+              content: `Information of ${person.name} has already been removed from server`,
+              type: 'error'
+            })
+            setTimeout(() => {
+              setMessage(null)
+            }, 5000)
           })
       }
     } else {
@@ -88,6 +98,17 @@ const App = () => {
         .then(() => {
           setPersons(persons.filter(p => p.id !== person.id))
           setPersonsToShow(personsToShow.filter(p => p.id !== person.id))
+        })
+        .catch(() => {
+          setPersons(persons.filter(p => p.id !== person.id))
+          setPersonsToShow(personsToShow.filter(p => p.id !== person.id))
+          setMessage({
+            content: `Information of ${person.name} has already been removed from server`,
+            type: 'error'
+          })
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
         })
     }
   }

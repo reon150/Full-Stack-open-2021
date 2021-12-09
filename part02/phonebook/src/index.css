@@ -1,9 +1,16 @@
-.information {
-  color: green;
+.message {
   background: lightgrey;
   font-size: 20px;
   border-style: solid;
   border-radius: 5px;
   padding: 10px;
   margin-bottom: 10px;
+}
+
+.information {
+  color: green;
+}
+
+.error {
+  color: red;
 }
