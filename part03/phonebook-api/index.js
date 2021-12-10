@@ -44,20 +44,24 @@ app.get('/api/persons/:id', (req, res) => {
 app.post('/api/persons', (req, res) => {
   const body = req.body
   if (!body.name || !body.number) {
-    return res.status(400).json({
+    res.status(400).json({
       error: 'content missing'
     })
+  } else if (persons.find(person => person.name == body.name)) {
+    res.status(409).json({
+      error: 'name must be unique'
+    })
+  } else {
+    const person = {
+      id: getRandomId(),
+      name: body.name,
+      number: body.number
+    }
+  
+    persons = persons.concat(person)
+  
+    res.json(person)
   }
-
-  const person = {
-    id: getRandomId(),
-    name: body.name,
-    number: body.number
-  }
-
-  persons = persons.concat(person)
-
-  res.json(person)
 })
 
 app.delete('/api/persons/:id', (req, res) => {
