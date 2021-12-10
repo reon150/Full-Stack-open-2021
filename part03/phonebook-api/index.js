@@ -41,6 +41,25 @@ app.get('/api/persons/:id', (req, res) => {
   }
 })
 
+app.post('/api/persons', (req, res) => {
+  const body = req.body
+  if (!body.name || !body.number) {
+    return res.status(400).json({
+      error: 'content missing'
+    })
+  }
+
+  const person = {
+    id: getRandomId(),
+    name: body.name,
+    number: body.number
+  }
+
+  persons = persons.concat(person)
+
+  res.json(person)
+})
+
 app.delete('/api/persons/:id', (req, res) => {
   const id = Number(req.params.id)
   persons = persons.filter(person => person.id !== id)
@@ -59,3 +78,5 @@ const PORT = 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
+
+const getRandomId = () => Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)
