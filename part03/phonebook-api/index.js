@@ -1,6 +1,6 @@
-require('dotenv').config();
+require('dotenv').config()
 const express = require('express')
-const morgan = require('morgan');
+const morgan = require('morgan')
 const cors = require('cors')
 const Person = require('./models/person')
 
@@ -9,7 +9,7 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 morgan.token('body', req => JSON.stringify(req.body))
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 app.get('/api/persons', (req, res, next) => {
   Person.find({}).then(persons => res.json(persons)).catch(error => next(error))
@@ -38,7 +38,7 @@ app.post('/api/persons', (req, res, next) => {
       name: body.name,
       number: body.number
     })
-  
+
     person.save().then(savedPerson => res.json(savedPerson)).catch(error => next(error))
   }
 })
@@ -59,7 +59,7 @@ app.put('/api/persons/:id', (request, response, next) => {
 })
 
 app.delete('/api/persons/:id', (req, res) => {
-  Person.remove({ _id: req.params.id }, (err) => {
+  Person.remove({ _id: req.params.id }, () => {
     res.status(204).end()
   })
 })

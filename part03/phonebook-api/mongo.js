@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-require('dotenv').config();
+require('dotenv').config()
 
 const url = process.env.MONGODB_URI || 'mongodb://localhost:27017/phonebook'
 mongoose.connect(url)
@@ -24,7 +24,7 @@ if (process.argv.length === 2) {
     name: process.argv[2],
     number: process.argv[3]
   })
-  
+
   person.save().then(person => {
     console.log(`added ${person.name} ${person.number} to phonebook`)
     mongoose.connection.close()
