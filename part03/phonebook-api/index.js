@@ -60,15 +60,12 @@ app.post('/api/persons', (req, res) => {
       error: 'name must be unique'
     })
   } else {
-    const person = {
-      id: getRandomId(),
+    const person = new Person({
       name: body.name,
       number: body.number
-    }
+    })
   
-    persons = persons.concat(person)
-  
-    res.json(person)
+    person.save().then(savedPerson => res.json(savedPerson))
   }
 })
 
