@@ -81,7 +81,10 @@ const App = () => {
             setMessage(null)
           }, 5000)
         })
-        .catch(error => alert(`An error has ocurred: ${error.message}`))
+        .catch(error => {
+          setMessage({ content: error.response.data.error, type: 'error' })
+          setTimeout(() => { setMessage(null) }, 5000)
+        })
     }
   }
 
