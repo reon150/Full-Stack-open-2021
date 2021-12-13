@@ -88,7 +88,7 @@ describe('favorite blog', () => {
   test('when the list has no elements', () => {
     const result = listHelper.favoriteBlog([]);
 
-    expect(result).toEqual({});
+    expect(result).toEqual(null);
   });
 
   test('when list has many elements', () => {
@@ -96,6 +96,30 @@ describe('favorite blog', () => {
 
     const { title, author, likes } = blogs[2];
     const expected = { title, author, likes };
+
+    expect(result).toEqual(expected);
+  });
+});
+
+describe('most blogs', () => {
+  test('when list has only one blog', () => {
+    const result = listHelper.mostBlogs([blogs[0]]);
+
+    const expected = { author: blogs[0].author, blogs: 1 };
+
+    expect(result).toEqual(expected);
+  });
+
+  test('when the list has no elements', () => {
+    const result = listHelper.mostBlogs([]);
+
+    expect(result).toEqual(null);
+  });
+
+  test('when list has many elements', () => {
+    const result = listHelper.mostBlogs(blogs);
+
+    const expected = { author: 'Robert C. Martin', blogs: 3 };
 
     expect(result).toEqual(expected);
   });
