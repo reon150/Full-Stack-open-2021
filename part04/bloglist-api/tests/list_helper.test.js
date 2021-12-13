@@ -124,3 +124,29 @@ describe('most blogs', () => {
     expect(result).toEqual(expected);
   });
 });
+
+describe('most likes', () => {
+  test('when list has only one blog', () => {
+    const result = listHelper.mostLikes([blogs[0]]);
+
+    const { author, likes } = blogs[0];
+    const expected = { author, likes };
+
+    expect(result).toEqual(expected);
+  });
+
+  test('when the list has no elements', () => {
+    const result = listHelper.mostLikes([]);
+
+    expect(result).toEqual(null);
+  });
+
+  test('when list has many elements', () => {
+    const result = listHelper.mostLikes(blogs);
+
+    const { author, likes } = blogs[2];
+    const expected = { author, likes };
+
+    expect(result).toEqual(expected);
+  });
+});

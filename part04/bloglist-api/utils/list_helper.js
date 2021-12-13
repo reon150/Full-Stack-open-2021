@@ -34,9 +34,19 @@ const mostBlogs = (blogs) => {
   return { author: blog.author, blogs: blogs.filter((b) => b.author === blog.author).length };
 };
 
+const mostLikes = (blogs) => {
+  if (blogs.length === 0) return null;
+
+  const blog = favoriteBlog(blogs);
+
+  const { author, likes } = blog;
+  return { author, likes };
+};
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes,
 };
