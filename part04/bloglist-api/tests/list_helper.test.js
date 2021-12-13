@@ -51,6 +51,13 @@ const blogs = [
   },
 ];
 
+describe('dummy', () => {
+  test('returns one', () => {
+    const result = listHelper.dummy([]);
+    expect(result).toBe(1);
+  });
+});
+
 describe('total likes', () => {
   test('when list has only one blog, equals the likes of that', () => {
     const result = listHelper.totalLikes([blogs[0]]);
@@ -65,5 +72,31 @@ describe('total likes', () => {
   test('when list has many elements', () => {
     const result = listHelper.totalLikes(blogs);
     expect(result).toBe(36);
+  });
+});
+
+describe('favorite blog', () => {
+  test('when list has only one blog', () => {
+    const result = listHelper.favoriteBlog([blogs[0]]);
+
+    const { title, author, likes } = blogs[0];
+    const expected = { title, author, likes };
+
+    expect(result).toEqual(expected);
+  });
+
+  test('when the list has no elements', () => {
+    const result = listHelper.favoriteBlog([]);
+
+    expect(result).toEqual({});
+  });
+
+  test('when list has many elements', () => {
+    const result = listHelper.favoriteBlog(blogs);
+
+    const { title, author, likes } = blogs[2];
+    const expected = { title, author, likes };
+
+    expect(result).toEqual(expected);
   });
 });
