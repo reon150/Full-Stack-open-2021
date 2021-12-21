@@ -1,19 +1,33 @@
+/* eslint-disable no-underscore-dangle */
 const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
+const User = require('../models/user');
 
 blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({});
+  const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 });
   return response.json(blogs);
 });
 
 blogsRouter.post('/', async (request, response, next) => {
   try {
-    request.body.likes = request.body.likes === undefined ? 0 : request.body.likes;
+    const { title, author, url } = request.body;
+    let { likes } = request.body;
+    likes = likes === undefined || likes === null ? 0 : likes;
+    const user = await User.findOne().sort({ _id: 1 });
 
-    const blog = new Blog(request.body);
-    const blogSaved = await blog.save();
+    const blog = new Blog({
+      title,
+      author,
+      url,
+      likes,
+      user: user._id,
+    });
 
-    return response.status(201).json(blogSaved);
+    const savedBlog = await blog.save();
+    user.blogs = user.blogs.concat(savedBlog._id);
+    await user.save();
+
+    return response.status(201).json(savedBlog);
   } catch (error) {
     return next(error);
   }
