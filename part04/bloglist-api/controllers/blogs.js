@@ -1,7 +1,16 @@
 /* eslint-disable no-underscore-dangle */
+const jwt = require('jsonwebtoken');
 const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
 const User = require('../models/user');
+
+const getTokenFrom = (request) => {
+  const authorization = request.get('authorization');
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    return authorization.substring(7);
+  }
+  return null;
+};
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 });
@@ -11,9 +20,15 @@ blogsRouter.get('/', async (request, response) => {
 blogsRouter.post('/', async (request, response, next) => {
   try {
     const { title, author, url } = request.body;
+    const token = getTokenFrom(request);
+    const decodedToken = jwt.verify(token, process.env.SECRET);
+    if (!token || !decodedToken.id) {
+      return response.status(401).json({ error: 'token missing or invalid' });
+    }
+    const user = await User.findById(decodedToken.id);
+
     let { likes } = request.body;
     likes = likes === undefined || likes === null ? 0 : likes;
-    const user = await User.findOne().sort({ _id: 1 });
 
     const blog = new Blog({
       title,
@@ -56,7 +71,9 @@ blogsRouter.put('/:id', async (request, response, next) => {
       likes,
     };
 
-    const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true });
+    const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {
+      new: true,
+    });
     return response.json(updatedBlog);
   } catch (error) {
     return next(error);
