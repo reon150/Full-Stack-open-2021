@@ -5,9 +5,19 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
+    minlength: 3,
+    required: true,
   },
-  name: String,
-  passwordHash: String,
+  name: {
+    type: String,
+    minlength: 5,
+    required: true,
+  },
+  passwordHash: {
+    type: String,
+    minlength: 3,
+    required: true,
+  },
   blogs: [
     {
       type: mongoose.Schema.Types.ObjectId,
