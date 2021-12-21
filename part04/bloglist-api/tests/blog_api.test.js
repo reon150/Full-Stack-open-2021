@@ -78,6 +78,21 @@ describe('addition of a new blog', () => {
       expect(blogAtEnd.likes).toBe(0);
     });
   });
+
+  test('fails with status code 400 if data invaild', async () => {
+    const newBlog = {
+      likes: 150,
+    };
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400);
+
+    const blogsAtEnd = await helper.blogsInDb();
+
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
+  });
 });
 
 afterAll(() => {
