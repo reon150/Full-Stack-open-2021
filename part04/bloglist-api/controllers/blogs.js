@@ -1,8 +1,6 @@
 /* eslint-disable no-underscore-dangle */
-const jwt = require('jsonwebtoken');
 const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
-const User = require('../models/user');
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 });
@@ -12,12 +10,7 @@ blogsRouter.get('/', async (request, response) => {
 blogsRouter.post('/', async (request, response, next) => {
   try {
     const { title, author, url } = request.body;
-
-    const decodedToken = jwt.verify(request.token, process.env.SECRET);
-    if (!decodedToken.id) {
-      return response.status(401).json({ error: 'token missing or invalid' });
-    }
-    const user = await User.findById(decodedToken.id);
+    const { user } = request;
 
     let { likes } = request.body;
     likes = likes === undefined || likes === null ? 0 : likes;
@@ -41,13 +34,11 @@ blogsRouter.post('/', async (request, response, next) => {
 });
 
 blogsRouter.delete('/:id', async (request, response) => {
-  const decodedToken = jwt.verify(request.token, process.env.SECRET);
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: 'token missing or invalid' });
-  }
+  const { user } = request;
+
   const blog = await Blog.findById(request.params.id);
 
-  if (blog.user.toString() !== decodedToken.id) {
+  if (blog.user.toString() !== user._id.toString()) {
     return response.status(401).json({ error: 'token invalid' });
   }
 
