@@ -47,7 +47,9 @@ const tokenExtractor = (request, response, next) => {
     ? authorization.substring(7)
     : null;
 
-  next();
+  if (request.token === null) return response.status(401).json({ error: 'token missing' });
+
+  return next();
 };
 
 const userExtractor = async (request, response, next) => {

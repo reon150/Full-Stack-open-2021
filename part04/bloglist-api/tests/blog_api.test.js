@@ -1,14 +1,31 @@
 /* eslint-disable no-underscore-dangle */
 const supertest = require('supertest');
+const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
+const User = require('../models/user');
 const helper = require('./test_helper');
 const Blog = require('../models/blog');
 const app = require('../app');
 
 const api = supertest(app);
 
+let token;
+let userTest;
+
+beforeAll(async () => {
+  await User.deleteMany({});
+  const passwordHash = await bcrypt.hash('secrect', 10);
+  const user = new User({ name: 'test_name', username: 'root', passwordHash });
+  userTest = await user.save();
+  const apiResponse = await api
+    .post('/api/login')
+    .send({ username: 'root', password: 'secrect' });
+  token = `bearer ${apiResponse.body.token}`;
+});
+
 beforeEach(async () => {
   await Blog.deleteMany({});
+  helper.initialBlogs[0].user = userTest._id;
   await Blog.insertMany(helper.initialBlogs);
 });
 
@@ -16,18 +33,19 @@ describe('when there is initially some blogs saved', () => {
   test('blogs are returned as json', async () => {
     await api
       .get('/api/blogs')
+      .set('Authorization', token)
       .expect(200)
       .expect('Content-Type', /application\/json/);
   });
 
   test('all blogs are returned', async () => {
-    const response = await api.get('/api/blogs');
+    const response = await api.get('/api/blogs').set('Authorization', token);
 
     expect(response.body).toHaveLength(helper.initialBlogs.length);
   });
 
   test('that the unique identifier property of the blog posts is named id', async () => {
-    const response = await api.get('/api/blogs');
+    const response = await api.get('/api/blogs').set('Authorization', token);
 
     expect(response.body[0].id).toBeDefined();
     expect(response.body[0]._id).toBe(undefined);
@@ -45,6 +63,7 @@ describe('addition of a new blog', () => {
 
     await api
       .post('/api/blogs')
+      .set('Authorization', token)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/);
@@ -66,6 +85,7 @@ describe('addition of a new blog', () => {
 
       const apiResponse = await api
         .post('/api/blogs')
+        .set('Authorization', token)
         .send(newBlog)
         .expect(201)
         .expect('Content-Type', /application\/json/);
@@ -87,6 +107,7 @@ describe('addition of a new blog', () => {
     await api
       .post('/api/blogs')
       .send(newBlog)
+      .set('Authorization', token)
       .expect(400);
 
     const blogsAtEnd = await helper.blogsInDb();
@@ -102,6 +123,7 @@ describe('deletion of a blog', () => {
 
     await api
       .delete(`/api/blogs/${blogToDelete.id}`)
+      .set('Authorization', token)
       .expect(204);
 
     const blogsAtEnd = await helper.blogsInDb();
