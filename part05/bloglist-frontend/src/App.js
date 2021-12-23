@@ -38,11 +38,11 @@ const App = () => {
       const user = await loginService.login({
         username, password,
       })
-  
+
       window.localStorage.setItem(
         'loggedNoteappUser', JSON.stringify(user)
       )
-  
+
       blogService.setToken(user.token)
       const blogs = await blogService.getAll()
       setBlogs(blogs)
@@ -136,21 +136,21 @@ const App = () => {
   return (
     <div>
       <Notification message={errorMessage} type={'error'} />
-      <Notification message={successMessage} type={'success'} />  
-      {user === null ? 
+      <Notification message={successMessage} type={'success'} />
+      {user === null ?
         <LoginForm
           username={username}
           password={password}
           handleUsernameChange={({ target }) => setUsername(target.value)}
           handlePasswordChange={({ target }) => setPassword(target.value)}
           handleSubmit={handleLogin}
-        /> : 
+        /> :
         <div>
           <h2>blogs</h2>
           <p>{user.name} logged in <button onClick={handleLogOut}>log out</button></p>
           {blogForm()}
           {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-            <Blog 
+            <Blog
               key={blog.id}
               blog={blog}
               increaseLike={() => increaseLike(blog.id)}

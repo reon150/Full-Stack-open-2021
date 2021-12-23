@@ -31,7 +31,7 @@ const Blog = ({ blog, increaseLike, remove }) => {
         <button onClick={increaseLike}>like</button>
         <button onClick={toggleShowDetails}>{showDetails ? 'hide': 'view'}</button>
       </div>
-      {showDetails ? 
+      {showDetails ?
         <div>
           <div>
             {blog.url}
@@ -42,7 +42,7 @@ const Blog = ({ blog, increaseLike, remove }) => {
           <div>
             {blog.user.name}
           </div>
-          {belongsToUser ? 
+          {belongsToUser ?
             <div>
               <button button onClick={remove}>remove</button>
             </div> :
