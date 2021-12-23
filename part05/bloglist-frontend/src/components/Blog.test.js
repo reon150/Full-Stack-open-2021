@@ -4,18 +4,18 @@ import '@testing-library/jest-dom/extend-expect'
 import { prettyDOM } from '@testing-library/dom'
 import Blog from './Blog'
 
-test('only renders blog\'s title and author by default', () => {
-  const blog = {
-    title: 'Component testing',
-    author: 'Ronald Ogando',
-    url: 'https',
-    likes: 176,
-    user: {
-      username: 'reon150',
-      name: 'Emilio Negron'
-    }
+const blog = {
+  title: 'Component testing',
+  author: 'Ronald Ogando',
+  url: 'https',
+  likes: 176,
+  user: {
+    username: 'reon150',
+    name: 'Emilio Negron'
   }
+}
 
+test('only renders blog\'s title and author by default', () => {
   window.localStorage.setItem('loggedBlogAppUser', JSON.stringify({ username: 'reon150' }))
 
   const component = render(<Blog blog={blog} />)
@@ -30,17 +30,6 @@ test('only renders blog\'s title and author by default', () => {
 })
 
 test('the blog\'s url and number of likes are shown when the button controlling the shown details has been clicked', () => {
-  const blog = {
-    title: 'Component testing',
-    author: 'Ronald Ogando',
-    url: 'https',
-    likes: 176,
-    user: {
-      username: 'reon150',
-      name: 'Emilio Negron'
-    }
-  }
-
   const component = render(<Blog blog={blog} />)
 
   const button = component.getByText('view')
@@ -52,4 +41,17 @@ test('the blog\'s url and number of likes are shown when the button controlling 
   expect(div).toHaveTextContent('Ronald Ogando')
   expect(div).toHaveTextContent('https')
   expect(div).toHaveTextContent('176')
+})
+
+test('if the like button is clicked twice, the event handler the component received as props is called twice', () => {
+  const mockHandler = jest.fn()
+
+  const component = render(
+    <Blog blog={blog} increaseLike={mockHandler} />
+  )
+
+  const button = component.getByText('like')
+  fireEvent.click(button)
+  fireEvent.click(button)
+  expect(mockHandler.mock.calls).toHaveLength(2)
 })
