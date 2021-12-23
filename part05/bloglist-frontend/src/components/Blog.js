@@ -13,10 +13,9 @@ const Blog = ({ blog, increaseLike, remove }) => {
   const [belongsToUser, setBelongsToUser] = useState(false)
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     const user = JSON.parse(loggedUserJSON)
-    console.log(user.username, 'U')
-    console.log(blog.user.username, 'B')
+
     setBelongsToUser(user.username === blog.user.username)
   }, [blog.user.username])
 
@@ -25,7 +24,7 @@ const Blog = ({ blog, increaseLike, remove }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className='blog'>
       <div>
         {blog.title} {blog.author}
         <button onClick={increaseLike}>like</button>

@@ -63,7 +63,7 @@ const App = () => {
   }
 
   const handleLogOut = () => {
-    window.localStorage.removeItem('loggedNoteappUser')
+    window.localStorage.removeItem('loggedBlogAppUser')
     setUser(null)
   }
 
