@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-const Blog = ({ blog, increaseLike }) => {
+const Blog = ({ blog, increaseLike, remove }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -8,8 +8,17 @@ const Blog = ({ blog, increaseLike }) => {
     borderWidth: 1,
     marginBottom: 5
   }
-  
+
   const [showDetails, setShowDetails] = useState(false)
+  const [belongsToUser, setBelongsToUser] = useState(false)
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+    const user = JSON.parse(loggedUserJSON)
+    console.log(user.username, 'U')
+    console.log(blog.user.username, 'B')
+    setBelongsToUser(user.username === blog.user.username)
+  }, [blog.user.username])
 
   const toggleShowDetails = () => {
     setShowDetails(!showDetails)
@@ -33,6 +42,12 @@ const Blog = ({ blog, increaseLike }) => {
           <div>
             {blog.user.name}
           </div>
+          {belongsToUser ? 
+            <div>
+              <button button onClick={remove}>remove</button>
+            </div> :
+            <></>
+          }
         </div>  :
         <></>
       }

@@ -106,6 +106,27 @@ const App = () => {
       })
   }
 
+  const deleteBlog = async id => {
+    const blog = blogs.find(n => n.id === id)
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      try {
+        await blogService.remove(id)
+        setBlogs(blogs.filter(n => n.id !== id))
+        setSuccessMessage(`The blog was ${blog.title} successfully removed`)
+        setTimeout(() => {
+          setSuccessMessage(null)
+        }, 5000)
+      } catch (error) {
+        setErrorMessage(
+          `Blog '${blog.title}' was already removed from server`
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      }
+    }
+  }
+
   const blogForm = () => (
     <Togglable buttonLabel='create new blog' ref={blogFormRef}>
       <BlogForm createNewBlog={addBlog} />
@@ -129,7 +150,12 @@ const App = () => {
           <p>{user.name} logged in <button onClick={handleLogOut}>log out</button></p>
           {blogForm()}
           {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-            <Blog key={blog.id} blog={blog} increaseLike={() => increaseLike(blog.id)} />
+            <Blog 
+              key={blog.id}
+              blog={blog}
+              increaseLike={() => increaseLike(blog.id)}
+              remove={() => deleteBlog(blog.id)}
+            />
           )}
         </div>
       }
