@@ -1,7 +1,13 @@
 const user = {
   name: 'Ronald Ogando',
   username: 'reon150',
-  password: '123'
+  password: '123456789'
+}
+
+const blog = {
+  title: 'cypress testing',
+  author: 'Ronald Ogando',
+  url: 'https',
 }
 
 describe('Blog app', function() {
@@ -38,6 +44,22 @@ describe('Blog app', function() {
         .and('have.css', 'border-style', 'solid')
 
       cy.get('html').should('not.contain', `${user.name} logged in`)
+    })
+  })
+
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.login({ username: user.username, password: user.password })
+    })
+
+    it('A blog can be created', function() {
+      cy.contains('create new blog').click()
+      cy.get('#title').type(blog.title)
+      cy.get('#url').type(blog.url)
+      cy.get('#author').type(blog.author)
+      cy.get('#create-btn').click()
+      cy.contains(blog.title)
+      cy.contains(blog.author)
     })
   })
 })
