@@ -27,8 +27,8 @@ const Blog = ({ blog, increaseLike, remove }) => {
     <div style={blogStyle} className='blog'>
       <div>
         {blog.title} {blog.author}
-        <button onClick={increaseLike}>like</button>
-        <button onClick={toggleShowDetails}>{showDetails ? 'hide': 'view'}</button>
+        <button id='like-btn' onClick={increaseLike}>like</button>
+        <button id='view-btn' onClick={toggleShowDetails}>{showDetails ? 'hide': 'view'}</button>
       </div>
       {showDetails ?
         <div>
