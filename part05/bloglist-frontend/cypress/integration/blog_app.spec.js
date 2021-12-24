@@ -79,5 +79,41 @@ describe('Blog app', function() {
         cy.contains(`The blog ${blog.title} was successfully removed`)
       })
     })
+
+    describe('and many blogs exists', function () {
+      beforeEach(function() {
+        cy.createBlog({ author: 'Ronald Ogando', title: 'titletest1', url: 'https' })
+        cy.createBlog({ author: 'Emilio Negron', title: 'titletest2', url: 'http' })
+        cy.createBlog({ author: 'Ronald Negron', title: 'titletest3', url: 'https' })
+      })
+
+      it.only('they are ordered by number of likes', function() {
+        cy.contains('titletest1').parent().as('blogtest1')
+        cy.contains('titletest2').parent().as('blogtest2')
+        cy.contains('titletest3').parent().as('blogtest3')
+
+        cy.get('@blogtest1').contains('view').click()
+        cy.get('@blogtest2').contains('view').click()
+        cy.get('@blogtest3').contains('view').click()
+        cy.get('@blogtest1').contains('like').as('like1')
+        cy.get('@blogtest2').contains('like').as('like2')
+        cy.get('@blogtest3').contains('like').as('like3')
+
+        cy.get('@like3').click()
+        cy.get('@like3').click()
+        cy.get('@like3').click()
+        cy.get('@like1').click()
+        cy.get('@like1').click()
+        cy.get('@like2').click()
+
+        cy.wait(200)
+
+        cy.get('.blog').then(blogs => {
+          cy.wrap(blogs[0]).should('contain', 'titletest3')
+          cy.wrap(blogs[1]).should('contain', 'titletest1')
+          cy.wrap(blogs[2]).should('contain', 'titletest2')
+        })
+      })
+    })
   })
 })
