@@ -112,7 +112,7 @@ const App = () => {
       try {
         await blogService.remove(id)
         setBlogs(blogs.filter(n => n.id !== id))
-        setSuccessMessage(`The blog was ${blog.title} successfully removed`)
+        setSuccessMessage(`The blog ${blog.title} was successfully removed`)
         setTimeout(() => {
           setSuccessMessage(null)
         }, 5000)

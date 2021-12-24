@@ -68,9 +68,15 @@ describe('Blog app', function() {
       })
 
       it('it can be made important', function () {
-        cy.contains(blog.title).find('#like-btn').click()
-        cy.contains(blog.title).find('#view-btn').click()
+        cy.contains(blog.title).find('.like-btn').click()
+        cy.contains(blog.title).find('.view-btn').click()
         cy.get('.blog').should('contain.text', 'likes 1')
+      })
+
+      it('can be deleted by the user who created it', function() {
+        cy.contains(blog.title).find('.view-btn').click()
+        cy.contains(blog.title).parent().find('.delete-btn').click()
+        cy.contains(`The blog ${blog.title} was successfully removed`)
       })
     })
   })
