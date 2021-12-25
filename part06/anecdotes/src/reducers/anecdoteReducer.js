@@ -24,7 +24,7 @@ const anecdoteReducer = (state = initialState, action) => {
     case 'NEW_ANECDOTE':
       const anecdote = asObject(action.data.content)
       return state.concat(anecdote)
-    case 'VOTE': {
+    case 'VOTE': 
       const id = action.data.id
       const anecdoteToVote = state.find(n => n.id === id)
       const votedAnecdote = { 
@@ -34,7 +34,6 @@ const anecdoteReducer = (state = initialState, action) => {
       return state.map(anecdote =>
         anecdote.id !== id ? anecdote : votedAnecdote 
       )
-     }
     default:
       return state
   }
@@ -47,7 +46,7 @@ export const createAnecdote = content => ({
 
 export const voteFor = id => ({
   type: 'VOTE',
-  data: { id }
+  data: { id, content: initialState.find(a => a.id === id).content }
 })
 
 export default anecdoteReducer
