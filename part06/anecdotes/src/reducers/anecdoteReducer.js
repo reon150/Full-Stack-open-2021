@@ -18,11 +18,13 @@ const asObject = (anecdote) => {
 }
 
 const initialState = anecdotesAtStart.map(asObject)
+const dbSimulation = initialState
 
 const anecdoteReducer = (state = initialState, action) => {
   switch(action.type) {
     case 'NEW_ANECDOTE':
       const anecdote = asObject(action.data.content)
+      dbSimulation.push(anecdote)
       return state.concat(anecdote)
     case 'VOTE': 
       const id = action.data.id
