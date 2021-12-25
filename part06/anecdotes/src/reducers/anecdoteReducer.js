@@ -19,9 +19,9 @@ const anecdoteReducer = (state = [], action) => {
   }
 }
 
-export const createAnecdote = content => ({
+export const createAnecdote = data => ({
   type: 'NEW_ANECDOTE',
-  data: { content },
+  data,
 })
 
 export const voteFor = id => ({
@@ -29,10 +29,10 @@ export const voteFor = id => ({
   data: { id }
 })
 
-export const initializeAnecdotes = (anecdotes) => {
+export const initializeAnecdotes = (data) => {
   return {
     type: 'INIT_ANECDOTES',
-    data: anecdotes,
+    data,
   }
 }
 
