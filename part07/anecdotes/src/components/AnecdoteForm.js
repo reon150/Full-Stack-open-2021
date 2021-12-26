@@ -3,9 +3,9 @@ import { useHistory } from "react-router-dom"
 import useField from '../hooks/useField'
 
 const AnecdoteForm = (props) => {
-  const content = useField('text')
-  const author = useField('text')
-  const info = useField('text')
+  const [content, resetContent] = useField('text')
+  const [author, resetAuthor] = useField('text')
+  const [info, resetInfo] = useField('text')
   const history = useHistory();
 
   const handleSubmit = (e) => {
@@ -23,9 +23,9 @@ const AnecdoteForm = (props) => {
 
   const reset = (e) => {
     e.preventDefault()
-    content.reset()
-    author.reset()
-    info.reset()
+    resetContent()
+    resetAuthor()
+    resetInfo()
   }
 
   return (
