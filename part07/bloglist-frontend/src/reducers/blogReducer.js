@@ -63,7 +63,7 @@ export const removeBlog = id => {
     await blogService.remove(id)
     dispatch({
       type: 'REMOVE_BLOG',
-      data: id,
+      data: { id },
     })
   }
 }

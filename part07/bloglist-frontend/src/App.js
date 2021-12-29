@@ -14,7 +14,7 @@ const App = () => {
   const dispatch = useDispatch()
   const user = useSelector(state => state.user)
   const [username, resetUsername] = useField('text')
-  const [password, resetPassword] = useField('text')
+  const [password, resetPassword] = useField('password')
 
   const blogFormRef = React.createRef()
 

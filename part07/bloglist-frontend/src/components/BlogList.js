@@ -35,7 +35,7 @@ const BlogList = () => {
     <div>
       {blogs.sort(byLikes).map(blog =>
         <Blog
-          key={blog.id}
+          key={blog.id }
           blog={blog}
           handleLike={handleLike}
           handleRemove={handleRemove}
