@@ -1,4 +1,8 @@
 import React, { useEffect } from 'react'
+import {
+  BrowserRouter as Router,
+  Routes, Route
+} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
@@ -9,6 +13,7 @@ import { initializeBlogs } from './reducers/blogReducer'
 import { removeUser, logUser, setUser } from './reducers/userReducer'
 import { setNotification } from './reducers/notificationReducer'
 import BlogList from './components/BlogList'
+import Users from './components/Users'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -78,7 +83,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <Router>
       <h2>blogs</h2>
 
       <Notification />
@@ -91,8 +96,12 @@ const App = () => {
         <NewBlog />
       </Togglable>
 
-      <BlogList />
-    </div>
+      <Routes>
+        <Route exact path='/users' element={<Users />} />
+        <Route path='/' element={<BlogList />} />
+      </Routes>
+
+    </Router>
   )
 }
 
