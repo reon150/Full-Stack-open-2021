@@ -15,6 +15,7 @@ import { setNotification } from './reducers/notificationReducer'
 import BlogList from './components/BlogList'
 import Users from './components/Users'
 import User from './components/User'
+import BlogDetails from './components/BlogDetails'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -100,6 +101,7 @@ const App = () => {
       <Routes>
         <Route exact path='/users/:id' element={<User />} />
         <Route exact path='/users' element={<Users />} />
+        <Route exact path='/blogs/:id' element={<BlogDetails />} />
         <Route path='/' element={<BlogList />} />
       </Routes>
 
