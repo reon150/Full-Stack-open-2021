@@ -31,8 +31,11 @@ export const setUser = (user) => ({
   data: user
 })
 
-export const removeUser = () => ({
-  type: 'REMOVE_USER',
-})
+export const removeUser = () => {
+  storage.logoutUser()
+  return ({
+    type: 'REMOVE_USER',
+  })
+}
 
 export default userReducer

@@ -10,12 +10,13 @@ import NewBlog from './components/NewBlog'
 import storage from './utils/storage'
 import useField from './hooks/useField'
 import { initializeBlogs } from './reducers/blogReducer'
-import { removeUser, logUser, setUser } from './reducers/userReducer'
+import { logUser, setUser } from './reducers/userReducer'
 import { setNotification } from './reducers/notificationReducer'
 import BlogList from './components/BlogList'
 import Users from './components/Users'
 import User from './components/User'
 import BlogDetails from './components/BlogDetails'
+import Navigation from './components/Navigation'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -51,11 +52,6 @@ const App = () => {
     }
   }
 
-  const handleLogout = () => {
-    dispatch(removeUser(user))
-    storage.logoutUser()
-  }
-
   if (!user || Object.keys(user).length === 0) {
     return (
       <div>
@@ -86,13 +82,11 @@ const App = () => {
 
   return (
     <Router>
-      <h2>blogs</h2>
+      <Navigation />
+
+      <h2>blog app</h2>
 
       <Notification />
-
-      <p>
-        {user.name} logged in <button onClick={handleLogout}>logout</button>
-      </p>
 
       <Togglable buttonLabel='create new blog'  ref={blogFormRef}>
         <NewBlog />
