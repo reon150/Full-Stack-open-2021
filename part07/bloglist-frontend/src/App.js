@@ -14,6 +14,7 @@ import { removeUser, logUser, setUser } from './reducers/userReducer'
 import { setNotification } from './reducers/notificationReducer'
 import BlogList from './components/BlogList'
 import Users from './components/Users'
+import User from './components/User'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -97,6 +98,7 @@ const App = () => {
       </Togglable>
 
       <Routes>
+        <Route exact path='/users/:id' element={<User />} />
         <Route exact path='/users' element={<Users />} />
         <Route path='/' element={<BlogList />} />
       </Routes>

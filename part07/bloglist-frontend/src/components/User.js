@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { setUsers } from '../reducers/usersReducer'
 
 const Users = () => {
@@ -20,29 +20,19 @@ const Users = () => {
     )
   }
 
+  const id = useParams().id
+  const user = users.find(u => u.id === id)
+
   return (
     <div>
-      <h2>Users</h2>
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>blogs created</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map(user =>
-            <tr key={user.id}>
-              <td>
-                <Link to={`/users/${user.id}`}>
-                  {user.name}
-                </Link>
-              </td>
-              <td>{user.blogs.length}</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      <h2>{user.name}</h2>
+      <h3>added blogs</h3>
+      <ul>
+        {user.blogs.map(blog =>
+          <li key={blog.id}>
+            {blog.title}
+          </li>)}
+      </ul>
     </div>
   )
 }
