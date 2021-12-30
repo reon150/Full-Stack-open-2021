@@ -37,6 +37,13 @@ const BlogDetails = () => {
           </div>
           <div>added by {blog.user.name}</div>
           {own&&<button onClick={() => handleRemove(blog.id)}>remove</button>}
+          <h3>comments</h3>
+          <ul>
+            {('comments' in blog) && blog.comments.map((comment, index) =>
+              <li key={comment + index}>
+                {comment}
+              </li>)}
+          </ul>
         </div>
       )}
     </div>

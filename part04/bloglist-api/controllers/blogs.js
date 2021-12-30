@@ -78,4 +78,23 @@ blogsRouter.put('/:id', async (request, response, next) => {
   }
 });
 
+blogsRouter.post('/:id/comments', async (request, response, next) => {
+  try {
+    const { id } = request.params;
+    const { comment } = request.body;
+
+    request.body.likes = request.body.likes === undefined ? 0 : request.body.likes;
+
+    const blog = await Blog.findById(id);
+    blog.comments.push(comment);
+
+    const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {
+      new: true,
+    });
+    return response.json(updatedBlog);
+  } catch (error) {
+    return next(error);
+  }
+});
+
 module.exports = blogsRouter;
