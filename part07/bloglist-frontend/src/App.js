@@ -17,6 +17,7 @@ import Users from './components/Users'
 import User from './components/User'
 import BlogDetails from './components/BlogDetails'
 import Navigation from './components/Navigation'
+import { Button, Form } from 'react-bootstrap'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -54,52 +55,54 @@ const App = () => {
 
   if (!user || Object.keys(user).length === 0) {
     return (
-      <div>
+      <div className='container'>
         <h2>login to application</h2>
 
         <Notification />
 
-        <form onSubmit={handleLogin}>
-          <div>
-            username
-            <input
+        <Form onSubmit={handleLogin}>
+          <Form.Group>
+            <Form.Label>username:</Form.Label>
+            <Form.Control
               id='username'
               {...username}
             />
-          </div>
-          <div>
-            password
-            <input
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>password:</Form.Label>
+            <Form.Control
               id='password'
               {...password}
             />
-          </div>
-          <button id='login'>login</button>
-        </form>
+          </Form.Group>
+          <Button variant='primary' id='login' type='submit'>login</Button>
+        </Form>
       </div>
     )
   }
 
   return (
-    <Router>
-      <Navigation />
+    <div className='container'>
+      <Router>
+        <Navigation />
 
-      <h2>blog app</h2>
+        <h2>blog app</h2>
 
-      <Notification />
+        <Notification />
 
-      <Togglable buttonLabel='create new blog'  ref={blogFormRef}>
-        <NewBlog />
-      </Togglable>
+        <Togglable buttonLabel='create new blog'  ref={blogFormRef}>
+          <NewBlog />
+        </Togglable>
 
-      <Routes>
-        <Route exact path='/users/:id' element={<User />} />
-        <Route exact path='/users' element={<Users />} />
-        <Route exact path='/blogs/:id' element={<BlogDetails />} />
-        <Route path='/' element={<BlogList />} />
-      </Routes>
+        <Routes>
+          <Route exact path='/users/:id' element={<User />} />
+          <Route exact path='/users' element={<Users />} />
+          <Route exact path='/blogs/:id' element={<BlogDetails />} />
+          <Route path='/' element={<BlogList />} />
+        </Routes>
 
-    </Router>
+      </Router>
+    </div>
   )
 }
 

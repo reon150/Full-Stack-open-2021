@@ -3,6 +3,7 @@ import { useParams, useNavigate  } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { addComment, likeTo, removeBlog } from '../reducers/blogReducer'
 import useField from '../hooks/useField'
+import { Button } from 'react-bootstrap'
 
 const BlogDetails = () => {
   const dispatch = useDispatch()
@@ -37,16 +38,16 @@ const BlogDetails = () => {
     <div className='blog'>
       {(
         <div>
-          <h2>{blog.title} by {blog.author}</h2>
+          <h3>{blog.title} by {blog.author}</h3>
           <div>{blog.url}</div>
           <div>likes {blog.likes}
-            <button onClick={() => handleLike(blog.id)}>like</button>
+            <Button variant='secondary' onClick={() => handleLike(blog.id)}>like</Button>
           </div>
           <div>added by {blog.user.name}</div>
-          {own&&<button onClick={() => handleRemove(blog.id)}>remove</button>}
-          <h3>comments</h3>
+          {own&&<Button variant='danger' onClick={() => handleRemove(blog.id)}>remove</Button>}
+          <h4>comments</h4>
           <input id='comment' {...comment} />
-          <button onClick={() => submitComment(blog.id)}>add comment</button>
+          <Button variant='outline-primary' onClick={() => submitComment(blog.id)}>add comment</Button>
           <ul>
             {('comments' in blog) && blog.comments.map((comment, index) =>
               <li key={comment + index}>
