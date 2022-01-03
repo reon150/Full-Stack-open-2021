@@ -19,3 +19,19 @@ export const ALL_BOOKS = gql`
     }
   }
 `
+
+export const CREATE_BOOK = gql`
+  mutation AddBook($published: Int!, $genres: [String!]!, $author: String!, $title: String!) {
+    addBook(
+      published: $published, 
+      genres: $genres, 
+      author: $author, 
+      title: $title
+    ) {
+      title
+      published
+      author
+      genres
+    } 
+  }
+`
