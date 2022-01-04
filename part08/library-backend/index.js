@@ -57,19 +57,17 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    bookCount: () => books.length,
-    authorCount: () => authors.length,
-    allBooks: (root, args) => {
-      let filteredBooks = books;
-      if (args.author)
-        filteredBooks = filteredBooks.filter(b => b.author === args.author)
+    bookCount: async () => await Book.countDocuments(),
+    authorCount: async () => await Author.countDocuments(),
+    allBooks: async (root, args) => {
+      let query = Book.find()
       
       if (args.genre)
-        filteredBooks = filteredBooks.filter(b => b.genres.includes(args.genre))
-      
-      return filteredBooks
+        query.where('genres', args.genre)
+
+      return await query.exec()
     },
-    allAuthors: () => authors,
+    allAuthors: async () => await Author.find({}),
   },
   Mutation: {
     addBook: async (root, args) => {
@@ -84,19 +82,19 @@ const resolvers = {
           invalidArgs: args,
         })
       }
-      
       return book
     },
-    editAuthor: (root, args) => {
-      let updatedAuthor = authors.find(a => a.name === args.name)
-      if (!updatedAuthor) return null
-      updatedAuthor = { ...updatedAuthor, born: args.setBornTo }
-      authors = authors.map(a => a.name !== args.name ? a : updatedAuthor)
-      return updatedAuthor
+    editAuthor: async (root, args) => {
+      const author = await Author.findOne({ name: args.name })
+      if (!author) return null
+
+      author.born = args.setBornTo
+      await Author.findByIdAndUpdate(author._id, author)
+      return author
     }
   },
   Author: {
-    bookCount: (root) => books.filter(b => b.author === root.name).length
+    bookCount: async (root) => await Book.countDocuments({ author: root }),
   }
 }
 
