@@ -83,7 +83,7 @@ const resolvers = {
     bookCount: async () => await Book.countDocuments(),
     authorCount: async () => await Author.countDocuments(),
     allBooks: async (root, args) => {
-      let query = Book.find()
+      let query = Book.find().populate('author')
       
       if (args.genre)
         query.where('genres', args.genre)
