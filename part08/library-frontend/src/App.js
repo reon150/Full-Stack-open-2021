@@ -8,7 +8,7 @@ import Books from './components/Books'
 import BooksRecomendations from './components/BooksRecomendations'
 import LoginForm from './components/LoginForm'
 import NewBook from './components/NewBook'
-import { BOOK_ADDED } from './queries'
+import { ALL_BOOKS, BOOK_ADDED } from './queries'
 
 const App = () => {
   const [page, setPage] = useState('authors')
@@ -18,10 +18,19 @@ const App = () => {
 
   useSubscription(BOOK_ADDED, {
     onSubscriptionData: ({ subscriptionData }) => {
-      console.log(subscriptionData)
-      window.alert('A new book has been added')
+      const bookAdded = subscriptionData.data.bookAdded;
+      const booksInCache = client.readQuery({ query: ALL_BOOKS });
+      if (!booksInCache.allBooks.map(b => b.title).includes(bookAdded.title)) {
+        console.log('IN')
+        client.writeQuery({
+          query: ALL_BOOKS,
+          data: { allBooks: booksInCache.allBooks.concat(bookAdded) },
+        });
+      }
+      window.alert(`The '${bookAdded.title}' book has been added`)
     }
   })
+
 
   const logout = () => {
     setToken(null)
