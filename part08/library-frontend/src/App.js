@@ -1,17 +1,27 @@
 
-import { useApolloClient } from '@apollo/client'
+import {
+  useSubscription, useApolloClient
+} from '@apollo/client'
 import React, { useState } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import BooksRecomendations from './components/BooksRecomendations'
 import LoginForm from './components/LoginForm'
 import NewBook from './components/NewBook'
+import { BOOK_ADDED } from './queries'
 
 const App = () => {
   const [page, setPage] = useState('authors')
   const [token, setToken] = useState(null)
 
   const client = useApolloClient()
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      console.log(subscriptionData)
+      window.alert('A new book has been added')
+    }
+  })
 
   const logout = () => {
     setToken(null)
